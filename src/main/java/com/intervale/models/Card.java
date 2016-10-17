@@ -1,17 +1,21 @@
 package com.intervale.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Card {
     private Brand brand;
     private long number;
     private String ownerName;
-    private Date validity;
+    private long validity;
 
     public Card() {
     }
 
-    public Card(Brand brand, long number, String ownerName, Date validity) {
+    public Card(Brand brand, long number, String ownerName, long validity) {
         this.brand = brand;
         this.number = number;
         this.ownerName = ownerName;
@@ -30,7 +34,7 @@ public class Card {
         this.ownerName = ownerName;
     }
 
-    public void setValidity(Date validity) {
+    public void setValidity(long validity) {
         this.validity = validity;
     }
 
@@ -46,7 +50,7 @@ public class Card {
         return ownerName;
     }
 
-    public Date getValidity() {
+    public long getValidity() {
         return validity;
     }
 }

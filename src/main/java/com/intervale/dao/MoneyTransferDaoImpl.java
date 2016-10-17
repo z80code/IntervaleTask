@@ -5,15 +5,17 @@ import com.intervale.dao.dataSource.DataSource;
 import com.intervale.models.Card;
 import com.intervale.models.Currency;
 import com.intervale.models.MoneyTransfer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoneyTransferDao implements EntityDao<MoneyTransfer> {
+public class MoneyTransferDaoImpl implements InterfaceEntityDao<MoneyTransfer> {
 
     private final static String TABLE_NAME = "TRANSFERS";
 
@@ -27,18 +29,18 @@ public class MoneyTransferDao implements EntityDao<MoneyTransfer> {
     private final static String SELECT_ALL_QUERY =
             "select * from " + TABLE_NAME;
 
-    private JDBCWrapper jdbcWrapper;
+    @Autowired
+    private JDBCWrapperImpl jdbcWrapper;
 
-    public MoneyTransferDao(DataSource dataSource) {
-        jdbcWrapper = new JDBCWrapper(new BDConnectionManager(dataSource));
+    public MoneyTransferDaoImpl() {
     }
 
 
     @Override
     public void save(MoneyTransfer entity) throws SQLException, IOException, ClassNotFoundException {
         jdbcWrapper.preparedStatementQuery(INSERT_QUERY,
-                entity.getFromCard(),
-                entity.getToCard(),
+                entity.getClientCard(),
+                entity.getSubClientCard(),
                 "now()",
                 entity.getCurrency(),
                 entity.getAmount(),
@@ -54,11 +56,6 @@ public class MoneyTransferDao implements EntityDao<MoneyTransfer> {
 
     @Override
     public void update(MoneyTransfer entity) {
-
-    }
-
-    @Override
-    public void findByName(String entityName) {
 
     }
 
@@ -82,9 +79,9 @@ public class MoneyTransferDao implements EntityDao<MoneyTransfer> {
         SimpleDateFormat format = new SimpleDateFormat();
         return new MoneyTransfer(
                 result.getInt("transferId"),
-                gson.fromJson(result.getString("transfer_from_card"),Card.class ),
-                gson.fromJson(result.getString("transfer_to_card"), Card.class ),
-                result.getDate("transfer_datetime"),
+                gson.fromJson(result.getString("transfer_from_card"), Card.class),
+                gson.fromJson(result.getString("transfer_to_card"), Card.class),
+                result.getLong("transfer_datetime"),
                 Enum.valueOf(Currency.class, result.getString("transfer_currency")),
                 result.getBigDecimal("transfer_amount"),
                 result.getBigDecimal("transfer_commission")

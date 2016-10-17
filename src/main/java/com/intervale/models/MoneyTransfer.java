@@ -1,32 +1,38 @@
 package com.intervale.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class MoneyTransfer {
 
     private int transferId;
-    private Card fromCard;
-    private Card toCard;
-    private Date dateTime;
+    private Card clientCard;
+    private Card subClientCard;
+    private long dateTime;
     private Currency currency;
     private BigDecimal amount;
     private BigDecimal commission;
 
+    public Boolean isError;
+    public String status;
+    public double commissionOfAmount;
+    public double resultOperation;
 
     public MoneyTransfer() {
     }
 
-    public MoneyTransfer(int transferId,
-                         Card fromCard,
-                         Card toCard,
-                         Date dateTime,
-                         Currency currency,
-                         BigDecimal amount,
-                         BigDecimal commission) {
+    public MoneyTransfer(
+            int transferId,
+            Card clientCard,
+            Card subClientCard,
+            long dateTime,
+            Currency currency,
+            BigDecimal amount,
+            BigDecimal commission) {
         this.transferId = transferId;
-        this.fromCard = fromCard;
-        this.toCard = toCard;
+        this.clientCard = clientCard;
+        this.subClientCard = subClientCard;
         this.dateTime = dateTime;
         this.currency = currency;
         this.amount = amount;
@@ -37,15 +43,15 @@ public class MoneyTransfer {
         this.transferId = transferId;
     }
 
-    public void setFromCard(Card fromCard) {
-        this.fromCard = fromCard;
+    public void setClientCard(Card clientCard) {
+        this.clientCard = clientCard;
     }
 
-    public void setToCard(Card toCard) {
-        this.toCard = toCard;
+    public void setSubClientCard(Card subClientCard) {
+        this.subClientCard = subClientCard;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(long dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -65,15 +71,15 @@ public class MoneyTransfer {
         return transferId;
     }
 
-    public Card getFromCard() {
-        return fromCard;
+    public Card getClientCard() {
+        return clientCard;
     }
 
-    public Card getToCard() {
-        return toCard;
+    public Card getSubClientCard() {
+        return subClientCard;
     }
 
-    public Date getDateTime() {
+    public long getDateTime() {
         return dateTime;
     }
 

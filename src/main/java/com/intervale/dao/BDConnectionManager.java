@@ -1,6 +1,7 @@
 package com.intervale.dao;
 
 import com.intervale.dao.dataSource.DataSource;
+import org.springframework.context.annotation.Bean;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,8 +12,9 @@ import java.util.Properties;
 
 public class BDConnectionManager {
 
-    private Connection connection;
     private DataSource dataSource;
+
+    private Connection connection;
 
     public BDConnectionManager(DataSource dataSource) {
         this.dataSource = dataSource;
