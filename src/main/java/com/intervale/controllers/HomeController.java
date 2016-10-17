@@ -28,12 +28,12 @@ public class HomeController {
         Gson gson = new Gson();
        List<String> currencies = Arrays.
                 stream(Currency.values())
-                .map(x->x.toString())
+                .map(Enum::toString)
                 .collect(Collectors.toList());
 
         List<String> brands = Arrays.
                 stream(Brand.values())
-                .map(x->x.toString())
+                .map(Enum::toString)
                 .collect(Collectors.toList());
         Brand[] list1 = Brand.values();
 
