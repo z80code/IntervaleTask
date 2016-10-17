@@ -53,4 +53,27 @@ public class Card {
     public long getValidity() {
         return validity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (getNumber() != card.getNumber()) return false;
+        if (getValidity() != card.getValidity()) return false;
+        if (getBrand() != card.getBrand()) return false;
+        return getOwnerName().equals(card.getOwnerName());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getBrand().hashCode();
+        result = 31 * result + (int) (getNumber() ^ (getNumber() >>> 32));
+        result = 31 * result + getOwnerName().hashCode();
+        result = 31 * result + (int) (getValidity() ^ (getValidity() >>> 32));
+        return result;
+    }
 }

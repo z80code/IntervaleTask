@@ -16,7 +16,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -24,19 +26,16 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) throws SQLException, IOException, ClassNotFoundException {
         Gson gson = new Gson();
-        Currency[] list = Currency.values();
+       List<String> currencies = Arrays.
+                stream(Currency.values())
+                .map(x->x.toString())
+                .collect(Collectors.toList());
 
-        String[] currencies = new String[Currency.values().length];
-        for (int i = 0; i < Currency.values().length; i++) {
-            currencies[i] = list[i].toString();
-        }
-
+        List<String> brands = Arrays.
+                stream(Brand.values())
+                .map(x->x.toString())
+                .collect(Collectors.toList());
         Brand[] list1 = Brand.values();
-
-        String[] brands = new String[Brand.values().length];
-        for (int i = 0; i < Brand.values().length; i++) {
-            brands[i] = list1[i].toString();
-        }
 
         int year = LocalDate.now().getYear();
         List<Integer> years = new ArrayList<>();

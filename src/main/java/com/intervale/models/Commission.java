@@ -13,6 +13,30 @@ public class Commission {
     @XmlElement
     private double value;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Commission that = (Commission) o;
+
+        if (Double.compare(that.getValue(), getValue()) != 0) return false;
+        if (getBrand() != that.getBrand()) return false;
+        return getCurrency() == that.getCurrency();
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getBrand().hashCode();
+        result = 31 * result + getCurrency().hashCode();
+        temp = Double.doubleToLongBits(getValue());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
     public Commission() {
     }
 

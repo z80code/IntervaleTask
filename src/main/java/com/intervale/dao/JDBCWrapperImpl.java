@@ -11,8 +11,6 @@ public class JDBCWrapperImpl implements InterfaceJDBCWrapper {
 
     private final Connection connection;
 
-
-    @Autowired
     public JDBCWrapperImpl(Connection connection) {
         this.connection = connection;
     }

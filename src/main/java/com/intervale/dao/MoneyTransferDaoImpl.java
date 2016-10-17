@@ -1,19 +1,19 @@
 package com.intervale.dao;
 
 import com.google.gson.Gson;
-import com.intervale.dao.dataSource.DataSource;
 import com.intervale.models.Card;
 import com.intervale.models.Currency;
 import com.intervale.models.MoneyTransfer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MoneyTransferDaoImpl implements InterfaceEntityDao<MoneyTransfer> {
 
@@ -29,24 +29,32 @@ public class MoneyTransferDaoImpl implements InterfaceEntityDao<MoneyTransfer> {
     private final static String SELECT_ALL_QUERY =
             "select * from " + TABLE_NAME;
 
-    @Autowired
+
     private JDBCWrapperImpl jdbcWrapper;
 
-    public MoneyTransferDaoImpl() {
+    public MoneyTransferDaoImpl() throws SQLException, IOException, ClassNotFoundException {
+        jdbcWrapper = JDBCWrapperImplManager.getJDBCWrapper();
     }
 
-
     @Override
-    public void save(MoneyTransfer entity) throws SQLException, IOException, ClassNotFoundException {
-        jdbcWrapper.preparedStatementQuery(INSERT_QUERY,
-                entity.getClientCard(),
-                entity.getSubClientCard(),
-                "now()",
+    public MoneyTransfer save(MoneyTransfer entity) throws SQLException, IOException, ClassNotFoundException {
+        entity.setDateTime(Calendar.getInstance().getTimeInMillis());
+        jdbcWrapper.preparedStatementUpdate(INSERT_QUERY,
+                new Gson().toJson(entity.getClientCard()),
+                new Gson().toJson(entity.getSubClientCard()),
+                entity.getDateTime(),
                 entity.getCurrency(),
                 entity.getAmount(),
                 entity.getCommission()
         );
+        List<MoneyTransfer> moneyTransfers = getAll();
 
+        for (int i = moneyTransfers.size()-1; i >= 0; i--) {
+            if (moneyTransfers.get(i).equals(entity)) {
+                return moneyTransfers.get(i);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -55,13 +63,15 @@ public class MoneyTransferDaoImpl implements InterfaceEntityDao<MoneyTransfer> {
     }
 
     @Override
-    public void update(MoneyTransfer entity) {
+    public MoneyTransfer update(MoneyTransfer entity) {
 
+        return entity;
     }
 
     @Override
-    public void findById(int id) {
+    public MoneyTransfer findById(int id) {
 
+        return null;
     }
 
     @Override

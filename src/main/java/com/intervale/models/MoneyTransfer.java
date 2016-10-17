@@ -94,4 +94,31 @@ public class MoneyTransfer {
     public BigDecimal getCommission() {
         return commission;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MoneyTransfer that = (MoneyTransfer) o;
+
+        if (getDateTime() != that.getDateTime()) return false;
+        if (!getClientCard().equals(that.getClientCard())) return false;
+        if (!getSubClientCard().equals(that.getSubClientCard())) return false;
+        if (getCurrency() != that.getCurrency()) return false;
+        if (!getAmount().equals(that.getAmount())) return false;
+        return getCommission().equals(that.getCommission());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getClientCard().hashCode();
+        result = 31 * result + getSubClientCard().hashCode();
+        result = 31 * result + (int) (getDateTime() ^ (getDateTime() >>> 32));
+        result = 31 * result + getCurrency().hashCode();
+        result = 31 * result + getAmount().hashCode();
+        result = 31 * result + getCommission().hashCode();
+        return result;
+    }
 }

@@ -18,13 +18,14 @@ public class CommissionDaoImpl implements InterfaceEntityDao<Commission> {
 
     private JDBCWrapperImpl jdbcWrapper;
 
-    public CommissionDaoImpl(JDBCWrapperImpl jdbcWrapper) {
-        this.jdbcWrapper = jdbcWrapper;
+    public CommissionDaoImpl() throws SQLException, IOException, ClassNotFoundException {
+        this.jdbcWrapper = JDBCWrapperImplManager.getJDBCWrapper();
     }
 
     @Override
-    public void save(Commission entity) throws SQLException, IOException, ClassNotFoundException {
+    public Commission save(Commission entity) throws SQLException, IOException, ClassNotFoundException {
 
+        return entity;
     }
 
     @Override
@@ -33,13 +34,15 @@ public class CommissionDaoImpl implements InterfaceEntityDao<Commission> {
     }
 
     @Override
-    public void update(Commission entity) {
+    public Commission update(Commission entity) {
 
+        return entity;
     }
 
     @Override
-    public void findById(int id) {
+    public Commission findById(int id) {
 
+        return null;
     }
 
     @Override

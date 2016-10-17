@@ -5,6 +5,7 @@ import com.intervale.models.Brand;
 import com.intervale.models.Commission;
 import com.intervale.models.Currency;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,8 +32,6 @@ public class CommissionService {
                         .map(x -> (Commission) x)
                         .filter(x -> (x.getBrand().equals(brand) && x.getCurrency().equals(currency)))
                         .collect(Collectors.toList());
-
-
         return commissions;
     }
 

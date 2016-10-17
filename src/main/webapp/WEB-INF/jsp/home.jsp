@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html lang="en" ng-app="myApp">
 <head>
@@ -11,7 +9,7 @@
 <body>
 <div class="container" ng-controller="MainCntl">
     <div style="text-align: center"><h2>Сервис приема денежных переводов</h2></div>
-    <form class="form-horizontal" role="form" method="post" action="/api/transfer/commission" id="sender">
+    <form class="form-horizontal {{input_form_visibility}}" role="form" id="sender">
         <fieldset>
             <legend>Введите данные вашей карты</legend>
             <div class="form-group">
@@ -29,7 +27,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Тип карты</label>
+                <label class="col-sm-3 control-label" for="ccb">Тип карты</label>
                 <div class="col-sm-3">
                     <select class="form-control" name="client_cardBrand" id="ccb"
                             ng-model="moneyTransfer.clientCard.brand" ng-change="value_changed()">
@@ -41,7 +39,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Срок действия</label>
+                <label class="col-sm-3 control-label" for="cey">Срок действия</label>
                 <div class="col-sm-9">
                     <div class="row">
                         <div class="col-sm-3">
@@ -88,11 +86,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Срок действия</label>
+                <label class="col-sm-3 control-label" for="subclient_expiryMonth">Срок действия</label>
                 <div class="col-sm-9">
                     <div class="row">
                         <div class="col-sm-3">
-                            <select class="form-control col-sm-2" name="subclient_expiryMonth"
+                            <select class="form-control col-sm-2" id="subclient_expiryMonth"
                                     ng-model="subclient_expiry.month" ng-change="value_changed()">
                                 <option>Месяц</option>
                                 <option value="01">Январь (01)</option>
@@ -110,8 +108,7 @@
                             </select>
                         </div>
                         <div class="col-sm-3">
-                            <select class="form-control" name="subclient_expiryYear" ng-model="subclient_expiry.year"
-                                    ng-change="value_changed()">
+                            <select class="form-control" ng-model="subclient_expiry.year" ng-change="value_changed()">
                                 <option>Год</option>
                                 <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
                             </select>
@@ -121,10 +118,10 @@
             </div>
             <legend>Введите валюту перевода</legend>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Валюта</label>
+                <label class="col-sm-3 control-label" for="moneyTransfer.currency">Валюта</label>
                 <div class="col-sm-3">
-                    <select class="form-control" name="expiry-year" ng-model="moneyTransfer.currency"
-                            ng-change="value_changed()">
+                    <select class="form-control" ng-model="moneyTransfer.currency" ng-change="value_changed()"
+                            id="moneyTransfer.currency">
                         <option>Валюта перевода</option>
                         <option ng-repeat="currency in currencies" value="{{currency}}">{{currency}}</option>
                     </select>
@@ -138,144 +135,138 @@
                            placeholder="Сумма" ng-model="moneyTransfer.amount">
                 </div>
             </div>
-            <div class="panel panel-default  {{button_visibility}}">
-                <div class="panel-heading">Сверка данных</div>
-                <div class="panel-body">
-                    <h2>Ваши входные данные</h2>
-                    <p>Таблица содержит ваши входные данные для операции</p>
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Поле</th>
-                            <th>Значение</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Имя держателя</td>
-                            <td>{{moneyTransfer.clientCard.ownerName}}</td>
-                        </tr>
-                        <tr>
-                            <td>Номер карты</td>
-                            <td>{{moneyTransfer.clientCard.number}}</td>
-                        </tr>
-                        <tr>
-                            <td>Тип карты</td>
-                            <td>{{moneyTransfer.clientCard.brand}}</td>
-                        </tr>
-                        <tr>
-                            <td>Срок действия</td>
-                            <td>{{client_expiry.month+ "."+client_expiry.year}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h2>Входные данные отправителя/получателя</h2>
-                    <p>Таблица содержит входные данные отправителя/получателя для операции</p>
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Поле</th>
-                            <th>Значение</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Имя держателя</td>
-                            <td>{{moneyTransfer.subClientCard.ownerName}}</td>
-                        </tr>
-                        <tr>
-                            <td>Номер карты</td>
-                            <td>{{moneyTransfer.subClientCard.number}}</td>
-                        </tr>
-                        <tr>
-                            <td>Срок действия</td>
-                            <td>{{subclient_expiry.month+ "."+subclient_expiry.year}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h2>Данные перевода</h2>
-                    <p>Таблица содержит данные перевода</p>
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Поле</th>
-                            <th>Значение</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Валюта</td>
-                            <td>{{moneyTransfer.currency}}</td>
-                        </tr>
-                        <tr>
-                            <td>Сумма перевода</td>
-                            <td>{{moneyTransfer.amount}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <h2>Расчет</h2>
-                    <p>Для данной операции принята комиссии в размере: <strong>{{moneyTransfer.commission+"%"}}</strong>
-                    </p>
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Описание</th>
-                            <th>Значение</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>С учетом комиссии по данной операции равной:</td>
-                            <td>{{moneyTransfer.commission+"%"}}</td>
-                        </tr>
-                        <tr>
-                            <td>По сумме {{moneyTransfer.amount}} {{moneyTransfer.currency}} она составит:</td>
-                            <td>{{moneyTransfer.commissionOfAmount}} {{moneyTransfer.currency}}</td>
-                        </tr>
-                        <tr>
-                            <td>Общий платеж составит:</td>
-                            <td>{{moneyTransfer.resultOperation}} {{moneyTransfer.currency}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="alert alert-danger {{error_string_visibility}}">
-                <strong>Внимание!</strong> {{error_string}}
-            </div>
-            <div class="form-group {{button_visibility}}">
-                <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-success" form="sender">Выполнить</button>
-                </div>
-            </div>
         </fieldset>
     </form>
+    <div class="panel panel-default  {{check_visibility}}">
+        <div class="panel-heading">Данные операции</div>
+        <div class="panel-body">
+            <h2>Ваши входные данные</h2>
+            <p>Таблица содержит ваши входные данные для операции</p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Значение</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Имя держателя</td>
+                    <td>{{moneyTransfer.clientCard.ownerName}}</td>
+                </tr>
+                <tr>
+                    <td>Номер карты</td>
+                    <td>{{moneyTransfer.clientCard.number}}</td>
+                </tr>
+                <tr>
+                    <td>Тип карты</td>
+                    <td>{{moneyTransfer.clientCard.brand}}</td>
+                </tr>
+                <tr>
+                    <td>Срок действия</td>
+                    <td>{{client_expiry.month}}.{{client_expiry.year}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h2>Входные данные отправителя/получателя</h2>
+            <p>Таблица содержит входные данные отправителя/получателя для операции</p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Значение</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Имя держателя</td>
+                    <td>{{moneyTransfer.subClientCard.ownerName}}</td>
+                </tr>
+                <tr>
+                    <td>Номер карты</td>
+                    <td>{{moneyTransfer.subClientCard.number}}</td>
+                </tr>
+                <tr>
+                    <td>Срок действия</td>
+                    <td>{{subclient_expiry.month}}.{{subclient_expiry.year}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h2>Данные перевода</h2>
+            <p>Таблица содержит данные перевода</p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Значение</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Валюта</td>
+                    <td>{{moneyTransfer.currency}}</td>
+                </tr>
+                <tr>
+                    <td>Сумма перевода</td>
+                    <td>{{moneyTransfer.amount}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h2>Расчет</h2>
+            <p>Для данной операции принята комиссия в размере: <strong>{{moneyTransfer.commission+"%"}}</strong>
+            </p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Описание</th>
+                    <th>Значение</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>С учетом комиссии по данной операции равной:</td>
+                    <td>{{moneyTransfer.commission+"%"}}</td>
+                </tr>
+                <tr>
+                    <td>По сумме {{moneyTransfer.amount}} {{moneyTransfer.currency}} она составит:</td>
+                    <td>{{moneyTransfer.commissionOfAmount}} {{moneyTransfer.currency}}</td>
+                </tr>
+                <tr>
+                    <td>Общий платеж составит:</td>
+                    <td>{{moneyTransfer.resultOperation}} {{moneyTransfer.currency}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="alert alert-danger {{error_string_visibility}}">
+        <strong>Внимание!</strong> {{error_string}}
+    </div>
+    <div class="alert alert-success {{success_string_visibility}}">
+        <strong>Операция выполнена успешно!</strong>
+    </div>
+    <div class="form-group {{button_visibility}}" style="text-align: right">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="reset" class="btn btn-warning" form="sender" ng-click="reset()">Сбросить
+            </button>
+            <button type="submit" class="btn btn-success" ng-click="onSend()">Выполнить</button>
+        </div>
+    </div>
+    <div class="form-group {{restart_button_visibility}}" style="text-align: right">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-success" ng-click="reset()">Провести еще одну операцию.
+            </button>
+        </div>
+    </div>
 </div>
-<!-- Angular (necessary for Bootstrap's JavaScript plugins) -->
+<!-- Angular (necessary for Page plugins) -->
 <script src="${pageContext.request.contextPath}/resources/angular/angular.min.js"></script>
 <script>
     var myApp = angular.module('myApp', []);
     myApp.controller('MainCntl', ['$scope', '$http', function ($scope, $http) {
-        //$scope.hiden = "visibility: visible | hidden | collapse | inherit";
-        $scope.error_string = "Заполните все поля для операции.";
-        $scope.error_string_visibility = "visibility: visible";
-        $scope.button_visibility = "visibility: hidden";
-        $scope.moneyTransfer = ${mt};
-        $scope.moneyTransfer.isError = true;
-        $scope.client_expiry = {};
-        $scope.subclient_expiry = {};
-        $scope.client_expiry.month = "Месяц";
-        $scope.client_expiry.year = "Год";
-        $scope.subclient_expiry.month = "Месяц";
-        $scope.subclient_expiry.year = "Год";
-        $scope.moneyTransfer.clientCard.number = "";
-        $scope.moneyTransfer.subClientCard.number = "";
-        $scope.moneyTransfer.clientCard.brand = "Тип карты";
-        $scope.moneyTransfer.currency = "Валюта перевода";
-        $scope.brands = ${brands};
-        $scope.currencies = ${currencies};
-        $scope.years = ${years};
-
+        var $hidden = "visibility: hidden";
+        var $visibility = "visibility: visible";
+        init();
         $scope.value_changed = function () {
             $scope.moneyTransfer.clientCard.validity = new Date($scope.client_expiry.year, $scope.client_expiry.month).getTime() / (1000);
             $scope.moneyTransfer.subClientCard.validity = new Date($scope.subclient_expiry.year, $scope.subclient_expiry.month).getTime() / (1000);
@@ -284,31 +275,73 @@
                         .success(function (moneyTransferBuff) {
                             $scope.moneyTransfer = moneyTransferBuff;
 
-                            $scope.error_string_visibility = "visibility: hidden";
-                            $scope.button_visibility = "visibility: hidden";
+                            $scope.error_string_visibility =
+                                    $scope.button_visibility =
+                                            $scope.check_visibility = $hidden;
                             $scope.error_string = "";
 
                             console.log($scope.moneyTransfer.isError);
 
                             if ($scope.moneyTransfer.isError) {
                                 $scope.error_string = $scope.moneyTransfer.status;
-                                $scope.error_string_visibility = "visibility: visible";
+                                $scope.error_string_visibility = $visibility;
                             } else {
-                                $scope.button_visibility = "visibility: visible";
+                                $scope.button_visibility =
+                                        $scope.check_visibility = $visibility;
                             }
                         })
                         .error(function () {
                             $scope.error_string = "Ошибка соединения с сервисом.";
-                            $scope.error_string_visibility = "visibility: visible";
+                            $scope.error_string_visibility = $visibility;
                         });
-
             } else {
                 $scope.error_string = "Заполните все поля для операции.";
-                $scope.button_visibility = "visibility: hidden";
-                $scope.error_string_visibility = "visibility: visible";
+                $scope.button_visibility = $hidden;
+                $scope.error_string_visibility = $visibility;
+                $scope.check_visibility = $hidden;
             }
-            ;
         };
+
+        $scope.onSend = function () {
+            $http.put('/api/transfer/put', $scope.moneyTransfer)
+                    .success(function (result) {
+                        if (result == "Success") {
+                            $scope.button_visibility =
+                                    $scope.input_form_visibility = $hidden;
+                            $scope.success_string_visibility =
+                                    $scope.restart_button_visibility = $visibility;
+                        } else {
+                            $scope.error_string = "Ошибка при выполнении операции.";
+                            $scope.error_string_visibility = $visibility;
+                        }
+                    })
+                    .error(function () {
+                        $scope.error_string = "Ошибка соединения с сервисом.";
+                        $scope.error_string_visibility = "visibility: visible";
+                    });
+        };
+
+        function init() {
+            $scope.moneyTransfer = ${mt};
+            $scope.brands = ${brands};
+            $scope.currencies = ${currencies};
+            $scope.years = ${years};
+            $scope.error_string = "Заполните все поля для операции.";
+            $scope.error_string_visibility = $visibility;
+            $scope.success_string_visibility =
+                    $scope.button_visibility =
+                            $scope.restart_button_visibility =
+                                    $scope.check_visibility = $hidden;
+            $scope.moneyTransfer.isError = true;
+            $scope.moneyTransfer.clientCard.number = "";
+            $scope.moneyTransfer.subClientCard.number = "";
+            $scope.moneyTransfer.clientCard.brand = "Тип карты";
+            $scope.moneyTransfer.currency = "Валюта перевода";
+            $scope.client_expiry = {};
+            $scope.subclient_expiry = {};
+            $scope.client_expiry.month = $scope.subclient_expiry.month = "Месяц";
+            $scope.client_expiry.year = $scope.subclient_expiry.year = "Год";
+        }
 
         function fieldChecked() {
             return /(\d+)/.test($scope.client_expiry.month) && /\d+/.test($scope.client_expiry.year) &&
@@ -320,6 +353,16 @@
                     /\d+/.test($scope.moneyTransfer.amount) && $scope.moneyTransfer.amount > 0;
         }
 
+        $scope.reset = function () {
+            $scope.input_form_visibility = $visibility;
+            $scope.check_visibility =
+                    $scope.button_visibility =
+                            $scope.success_string_visibility = $hidden;
+            $scope.error_string_visibility = $visibility;
+            $scope.restart_button_visibility = $hidden;
+            $scope.error_string = "Заполните все поля для операции.";
+        };
+
         function in_array(value, array) {
             for (var i = 0; i < array.length; i++) {
                 if (array[i] == value) return true;
@@ -327,7 +370,6 @@
             return false;
         }
     }]);
-
 
 </script>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

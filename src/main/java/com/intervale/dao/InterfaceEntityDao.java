@@ -5,13 +5,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface InterfaceEntityDao<T> {
-    void save(T entity) throws SQLException, IOException, ClassNotFoundException;
+    T save(T entity) throws SQLException, IOException, ClassNotFoundException;
 
     void remove(T entity);
 
-    void update(T entity);
+    T update(T entity);
 
-    void findById(int id);
+    T findById(int id);
 
     List<T> getAll() throws SQLException, IOException, ClassNotFoundException;
 }

@@ -4,6 +4,7 @@ import com.intervale.dao.JDBCWrapperImpl;
 import com.intervale.models.Commission;
 import com.intervale.models.modelsXML.Commissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,7 +13,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-
 
 public class InitBaseService {
 
