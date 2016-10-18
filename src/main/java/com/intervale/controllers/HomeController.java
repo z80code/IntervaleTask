@@ -20,11 +20,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Home-контроллер получающий GET запросы
+ * на адрес: localhost:8080/
+ */
+
 @Controller
 public class HomeController {
 
+    /**
+     * @param model - объект для передачи параметров на View
+     * @return - шаблон страницы, отображаемый клиенту
+     */
     @GetMapping("/")
-    public String home(Model model) throws SQLException, IOException, ClassNotFoundException {
+    public String home(Model model) {
         Gson gson = new Gson();
        List<String> currencies = Arrays.
                 stream(Currency.values())
@@ -58,5 +67,4 @@ public class HomeController {
 
         return "home";
     }
-
 }

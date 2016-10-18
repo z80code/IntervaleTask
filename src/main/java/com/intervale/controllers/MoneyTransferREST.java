@@ -14,12 +14,24 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * REST service для сервиса приема денег.
+ * API не имеют версии и  она тут пропущена.
+ */
+
 @RestController
 @RequestMapping("/api/transfer/")
 public class MoneyTransferREST {
 
     private static Logger logger = Logger.getLogger(MoneyTransferREST.class);
 
+    /**
+     * Метод заполняет объект расчитанными данными из класса CalcService.
+     * @param moneyTransfer Объект, для которого расчитывается комиссия.
+     * @return Возвращает объект с расчитанными данными.
+     * Все ошидки логируются.
+     * Логируются также полученные и отправленные данные.
+     */
     @PostMapping("commission")
     public MoneyTransfer calc(@RequestBody MoneyTransfer moneyTransfer) {
         moneyTransfer.status = null;
@@ -44,6 +56,14 @@ public class MoneyTransferREST {
         return moneyTransfer;
     }
 
+    /**
+     * Метод добавляет операцию в базу.
+     * @param moneyTransfer Объект, который записывается в базу.
+     *                      TODO добавить проверку корректности данных
+     *                      т.к. проверка не производится или должна производится на странице.
+     * @return Значение результата операции: Success = успешная запись в базу.
+     *                                       False = ошидка при записи.
+     */
     @PutMapping("put")
     public String putCommission(@RequestBody MoneyTransfer moneyTransfer) {
 
@@ -69,9 +89,28 @@ public class MoneyTransferREST {
         } else return new Gson().toJson("False");
     }
 
+    /**
+     * Возвращает Все комиссии из базы.
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     @PostMapping("commissions")
-    public List<Commission> getAll() throws SQLException, IOException, ClassNotFoundException {
+    public List<Commission> commissionsGetAll() throws SQLException, IOException, ClassNotFoundException {
         CommissionService commissionService = new CommissionService(new CommissionDaoImpl());
         return commissionService.getAll();
+    }
+    /**
+     * Возвращает Все операции по переводу из базы.
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    @PostMapping("transfers")
+    public List<MoneyTransfer> moneyTransferGetAll() throws SQLException, IOException, ClassNotFoundException {
+        MoneyTransferService moneyTransferService = new MoneyTransferService();
+        return moneyTransferService.getAll();
     }
 }

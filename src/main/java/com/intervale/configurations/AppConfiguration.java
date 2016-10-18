@@ -10,9 +10,21 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Конфигурационный файл
+ */
 @Configuration
 public class AppConfiguration {
 
+    /**
+     *
+     * @return объект Connection
+     * @throws SQLException - ошибка обмена данными с базой
+     * @throws IOException - ошибка ввода вывода
+     * @throws ClassNotFoundException -
+     * Все ошибки должны бвть обработаны
+     * в вызываемом метод месте
+     */
     @Bean
     public Connection connection() throws SQLException, IOException, ClassNotFoundException {
         BDConnectionManager bdConnectionManager = new BDConnectionManager(new DataSource());

@@ -25,30 +25,30 @@ public class JDBCWrapperImpl implements InterfaceJDBCWrapper {
     @Override
     public int preparedStatementUpdate(String sqlString, Object... parameters) throws SQLException, IOException, ClassNotFoundException {
         PreparedStatement preparedStatement = connection.prepareStatement(sqlString);
-        int indexer = 1;
-        for (Object param : parameters) {
-            preparedStatement.setString(indexer++, param.toString());
-        }
+        setParameters(preparedStatement, parameters);
         return preparedStatement.executeUpdate();
     }
 
     @Override
     public ResultSet preparedStatementQuery(String sqlString, Object... parameters) throws SQLException, IOException, ClassNotFoundException {
         PreparedStatement preparedStatement = connection.prepareStatement(sqlString);
-        int indexer = 1;
-        for (Object param : parameters) {
-            preparedStatement.setString(indexer++, param.toString());
-        }
+        setParameters(preparedStatement, parameters);
         return preparedStatement.executeQuery();
     }
 
     @Override
     public boolean preparedStatement(String sqlString, Object... parameters) throws SQLException, IOException, ClassNotFoundException {
         PreparedStatement preparedStatement = connection.prepareStatement(sqlString);
-        int indexer = 1;
+        setParameters(preparedStatement, parameters);
+        return preparedStatement.execute();
+    }
+
+    private PreparedStatement setParameters(PreparedStatement preparedStatement, Object... parameters) throws SQLException {
+
+        int indexer = 1; // нужна для автоматизации перечисления параметров
         for (Object param : parameters) {
             preparedStatement.setString(indexer++, param.toString());
         }
-        return preparedStatement.execute();
+        return preparedStatement;
     }
 }
