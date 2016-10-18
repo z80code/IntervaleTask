@@ -12,6 +12,9 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Точка входа в основное приложение.
+ */
 @SpringBootApplication
 public class StartApplication {
 
@@ -21,6 +24,7 @@ public class StartApplication {
                         new BDConnectionManager(
                                 new DataSource()).getConnection()));
         initBaseService.start("commissions.xml");
+        
         SpringApplication.run(StartApplication.class, args);
     }
 }
