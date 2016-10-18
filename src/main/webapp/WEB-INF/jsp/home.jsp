@@ -291,8 +291,10 @@
                             }
                         })
                         .error(function () {
-                            $scope.error_string = "Ошибка соединения с сервисом.";
+                            $scope.error_string = "Ошибка соединения с сервисом или введены недопустимые значения.";
                             $scope.error_string_visibility = $visibility;
+                            $scope.check_visibility =
+                                    $scope.button_visibility = $hidden;
                         });
             } else {
                 $scope.error_string = "Заполните все поля для операции.";
